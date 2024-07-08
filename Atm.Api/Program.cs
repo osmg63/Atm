@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Atm.Api.DataAccess;
-using Atm.Api.Core.Repository;
+using Atm.Api.Core.Repository.Concrete;
+using Atm.Api.Core.Repository.Abstract;
+using Atm.Api.Service.Abstract;
+using Atm.Api.Service.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,13 @@ builder.Services.AddDbContext<AtmDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-builder.Services.AddTransient<IPersonelRepository, PersonelRepository>();
+builder.Services.AddTransient<IAtmMachineRepository,AtmRepository>();
+builder.Services.AddTransient<IAtmService,AtmService>();
+builder.Services.AddTransient<ICityRepository, CityRepository>();
+builder.Services.AddTransient<ICityService, CityService>();
+builder.Services.AddTransient<IDistrictRepository, DistrictRepository>();
+builder.Services.AddTransient<IDistrictService, DistrictService>();
+
 
 var app = builder.Build();
 

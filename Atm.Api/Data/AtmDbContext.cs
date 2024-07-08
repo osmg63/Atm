@@ -11,7 +11,6 @@ public class AtmDbContext : DbContext
         
     }
 
-    public DbSet<Personel> Personels { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<District> Districts { get; set; }
     public DbSet<AtmMachine> AtmMachines { get; set; }
@@ -20,7 +19,6 @@ public class AtmDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new PersonelEntityConfiguration());
         modelBuilder.ApplyConfiguration(new CityEntityConfiguration());
         modelBuilder.ApplyConfiguration(new DistrictEntityConfiguration());
         modelBuilder.ApplyConfiguration(new AtmEntityConfiguration());

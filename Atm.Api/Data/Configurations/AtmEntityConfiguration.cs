@@ -26,7 +26,7 @@ namespace Atm.Api.Data.Configurations
                    .WithMany(d => d.AtmMachines)
                    .HasForeignKey(a => a.DistrictId)
                    .OnDelete(DeleteBehavior.Restrict); 
-            ;
+            
             builder.HasOne(a => a.City)
                   .WithMany(d => d.AtmMachines)
                   .HasForeignKey(a => a.CityId)

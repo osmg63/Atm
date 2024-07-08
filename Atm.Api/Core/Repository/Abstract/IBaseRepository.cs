@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Atm.Api.Core.Repository
+namespace Atm.Api.Core.Repository.Abstract
 {
     public interface IBaseRepository<TEntity>
         where TEntity : class, new()
@@ -9,7 +9,6 @@ namespace Atm.Api.Core.Repository
         void Delete(TEntity entity);
         TEntity Get(Expression<Func<TEntity, bool>> filter);
         List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null);
-        void Update(TEntity entity);
-        void UpdateById(TEntity entity, int id);
+        void SaveChanges();
     }
 }
