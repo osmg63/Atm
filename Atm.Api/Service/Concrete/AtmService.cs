@@ -1,52 +1,103 @@
 ﻿using Atm.Api.Core.Repository.Abstract;
+using Atm.Api.Core.Repository.Concrete;
+using Atm.Api.Data;
+using Atm.Api.Data.DTOs;
 using Atm.Api.Data.Entities;
+using Atm.Api.Data.Validations;
 using Atm.Api.Service.Abstract;
+using AutoMapper;
+using FluentValidation;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Atm.Api.Service.Concrete
 {
     public class AtmService : IAtmService
     {
+        private readonly IMapper _mapper;
+
         private readonly IAtmMachineRepository _atmMachineRepository;
 
-        public AtmService(IAtmMachineRepository atmMachineRepository)
+        public AtmService(IAtmMachineRepository atmMachineRepository, IMapper mapper)
         {
             this._atmMachineRepository = atmMachineRepository;
+            _mapper = mapper;
         }
 
-        public void Add(AtmMachine entity)
+        public AtmMachineDto Add(CreateAtmMachineDto dto)
         {
-             _atmMachineRepository.Add(entity);
+            var validator = new Data.Validations.CreateAtmMachineDtoValidator();
+            var result = validator.Validate(dto);
+
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+
+            }
+
+            var data = _mapper.Map<AtmMachine>(dto);
+
+
+            _atmMachineRepository.Add(data);
+            _atmMachineRepository.SaveChanges();
+
+
+            return _mapper.Map<AtmMachineDto>(data);
         }
+
 
         public void Delete(int id)
         {
-            Expression<Func<AtmMachine, bool>> filter = atm => atm.Id == id;
-            var entity =Get(filter);
-            _atmMachineRepository.Delete(entity);
+            
+            var data = _atmMachineRepository.Get(x=>x.Id==id);
+            _atmMachineRepository.Delete(data);
 
         }
 
-        public AtmMachine Get(Expression<Func<AtmMachine, bool>> filter)
+        public AtmMachineDto Get(int id)
         {
-            return _atmMachineRepository.Get(filter);  
+
+            var data = _atmMachineRepository.Get(x => x.Id == id);
+            return _mapper.Map<AtmMachineDto>(data);
         }
 
-        public List<AtmMachine> GetAll(Expression<Func<AtmMachine, bool>> filter = null)
+        public List<AtmMachineDto> GetAll()
         {
-            return _atmMachineRepository.GetAll(filter);
+            var data = _atmMachineRepository.GetAll();
+            return _mapper.Map<List<AtmMachineDto>>(data);
         }
 
-        public void Update(AtmMachine entity)
+
+        public void Update(UpdateAtmMachineDto dto)
         {
-            var data = _atmMachineRepository.Get(x => x.Id == entity.Id);
+            var validator = new UpdateAtmMachineDtoValidator();
+            var result = validator.Validate(dto);
+
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+
+            }
+
+            var data = _atmMachineRepository.Get(x => x.Id == dto.Id);
             if (data != null)
             {
-                data.Adress = entity.Adress;
-                data.Name = entity.Name;    
-                _atmMachineRepository.SaveChanges();
+
+               // data.Name = dto.Name;
+                //data.Adress = dto.Adress;
+                data.Latitude = dto.Latitude;
+                //data.Longitude = dto.Longitude;
+                //data.CityId = dto.CityId;
+                //data.DistrictId = dto.DistrictId;
+
+
             }
+            _atmMachineRepository.SaveChanges();
         }
+
+
+
+        //Validation
 
     }
 }

@@ -17,19 +17,19 @@ namespace Atm.Api.Controllers
             _districtService = districtService;
         }
 
-        [HttpGet("id")]
+        [HttpGet("GetById/{id}")]
         public IActionResult Get(int id)
         {
-            Expression<Func<District, bool>> filter = x => x.Id == id;
-            var data = _districtService.Get(filter);
+            
+            var data = _districtService.Get(id);
             return Ok(data);
 
         }
-        [HttpGet("Filter")]
-        public IActionResult GetFilter([FromQuery] string filter = null)
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
         {
-            Expression<Func<District, bool>> filt = null;
-            var data = _districtService.Get(filt);
+            
+            var data = _districtService.GetAll();
             return Ok(data);
 
         }

@@ -1,9 +1,11 @@
-﻿using Atm.Api.Data.Entities;
+﻿using Atm.Api.Data.DTOs;
+using Atm.Api.Data.Entities;
 using Atm.Api.Service.Abstract;
 using Atm.Api.Service.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
+using X.PagedList;
 
 namespace Atm.Api.Controllers
 {
@@ -18,19 +20,27 @@ namespace Atm.Api.Controllers
             _cityService = cityService;
         }
 
-        [HttpGet("id")]
+        [HttpGet("GetById/{id}")]
         public IActionResult Get(int id)
         {
-            Expression<Func<City, bool>> filter = x => x.Id == id;
-            var data = _cityService.Get(filter);
+            
+            var data = _cityService.Get(id);
             return Ok(data);
 
         }
-        [HttpGet("Filter")]
-        public IActionResult GetFilter([FromQuery] string filter=null)
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
         {
-            Expression<Func<City, bool>> filt = null;
-            var data = _cityService.Get(filt);
+            
+            var data = _cityService.GetAll();
+            return Ok(data);
+
+        }
+        [HttpGet("GetAllPage")]
+        public IActionResult GetAll(int page=1)
+        {
+
+            var data = _cityService.GetAll().ToPagedList(page,10);
             return Ok(data);
 
         }

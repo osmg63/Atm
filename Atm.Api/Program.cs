@@ -4,6 +4,11 @@ using Atm.Api.Core.Repository.Concrete;
 using Atm.Api.Core.Repository.Abstract;
 using Atm.Api.Service.Abstract;
 using Atm.Api.Service.Concrete;
+using Atm.Api.Data;
+using Atm.Api.Data.Validations;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +30,11 @@ builder.Services.AddTransient<ICityRepository, CityRepository>();
 builder.Services.AddTransient<ICityService, CityService>();
 builder.Services.AddTransient<IDistrictRepository, DistrictRepository>();
 builder.Services.AddTransient<IDistrictService, DistrictService>();
+builder.Services.AddAutoMapper(typeof(MyMapper));
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAtmMachineDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateAtmMachineDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
 
 
 var app = builder.Build();

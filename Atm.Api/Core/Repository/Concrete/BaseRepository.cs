@@ -1,5 +1,6 @@
 ﻿using Atm.Api.Data.Entities;
 using Atm.Api.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Principal;
 
@@ -49,8 +50,9 @@ namespace Atm.Api.Core.Repository.Concrete
 
 
         }
+       
 
-     
+
 
         public void SaveChanges()
         {

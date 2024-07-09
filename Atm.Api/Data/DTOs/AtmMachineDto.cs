@@ -1,6 +1,6 @@
-﻿namespace Atm.Api.Data.Entities
+﻿namespace Atm.Api.Data.DTOs
 {
-    public class AtmMachine
+    public class AtmMachineDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,7 +10,5 @@
         public int DistrictId { get; set; }
         public int CityId { get; set; }
         public bool IsActive { get; set; }
-        public virtual District District { get; set; }
-        public virtual City City { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Atm.Api.Data.Entities;
+﻿using Atm.Api.Data.DTOs;
+using Atm.Api.Data.Entities;
+using Atm.Api.Data.Validations;
 using Atm.Api.Service.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,32 +18,44 @@ namespace Atm.Api.Controllers
         {
             _atmService = atmService;
         }
-        [HttpGet("id")]
-        public IActionResult GetById(int id) {
-            Expression<Func<AtmMachine, bool>> filter = atm => atm.Id == id;
-            var data =_atmService.Get(filter);
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(int id)
+        {
+
+            var data = _atmService.Get(id);
             return Ok(data);
         }
-        [HttpPost]
-        public IActionResult Add([FromBody] AtmMachine entity)
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
         {
-            _atmService.Add(entity);
-            return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+            var data = _atmService.GetAll();
+            return Ok(data);
+        }
+        [HttpPost("Create")]
+        public IActionResult Add(CreateAtmMachineDto dto)
+        {
+         
+            var data = _atmService.Add(dto);
+            return Ok(data);
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromBody] AtmMachine entity)
+        public IActionResult Update(UpdateAtmMachineDto dto)
         {
-            _atmService.Update(entity);
+            _atmService.Update(dto);
 
-          
-            return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+
+            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
         }
 
-        [HttpDelete("id")]
-        public IActionResult DeleteById(int id) {
-             _atmService.Delete(id);
+        
+
+        [HttpDelete("Delete/{id}")]
+        public IActionResult DeleteById(int id)
+        {
+            _atmService.Delete(id);
             return Ok();
         }
     }
 }
+// Async Task kullanımı
