@@ -11,6 +11,9 @@ namespace Atm.Api.Service.Abstract
         AtmMachineDto Get(int id);
         List<AtmMachineDto> GetAll();
         void Update(UpdateAtmMachineDto entity);
+        AtmMachineDto GetById(int id);
+        List<AtmMachineDto> GetAllWithCityAndDistrictName();
+
 
     }
 }

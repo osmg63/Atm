@@ -22,7 +22,19 @@ public class CityService : ICityService
         return _mapper.Map<CityDto>(data);
 
     }
-   
+    public List<DistrictDtoResponse> GetWithDistricts(int id)
+    {
+        return _cityRepository.GetDistrictByCityId(id);
+       
+
+    }
+    public List<AtmDtoForCityResponse> GetWithAtms(int id)
+    {
+        return _cityRepository.GetAtmsWithCityId(id);
+
+
+    }
+
 
     public List<CityDto> GetAll()
     {

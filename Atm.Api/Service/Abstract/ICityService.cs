@@ -9,6 +9,7 @@ namespace Atm.Api.Service.Abstract
         
         CityDto Get(int id);
         List<CityDto> GetAll();
-        List<DistrictDto> GetByCityId(int cityId);
+        List<DistrictDtoResponse> GetWithDistricts(int id);
+        List<AtmDtoForCityResponse> GetWithAtms(int id);
     }
 }

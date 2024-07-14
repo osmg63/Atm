@@ -28,6 +28,22 @@ namespace Atm.Api.Controllers
             return Ok(data);
 
         }
+        [HttpGet("GetByCityIdDistrict/{cityId}")]
+        public IActionResult GetDistrict(int cityId)
+        {
+
+            var data = _cityService.GetWithDistricts(cityId);
+            return Ok(data);
+
+        }
+        [HttpGet("GetByCityIdAtms/{cityId}")]
+        public IActionResult GetAtm(int cityId)
+        {
+
+            var data = _cityService.GetWithAtms(cityId);
+            return Ok(data);
+
+        }
         [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
@@ -36,14 +52,7 @@ namespace Atm.Api.Controllers
             return Ok(data);
 
         }
-        [HttpGet("GetAllPage")]
-        public IActionResult GetAll(int page=1)
-        {
-
-            var data = _cityService.GetAll().ToPagedList(page,10);
-            return Ok(data);
-
-        }
+        
         //pagenation metodları
 
     }

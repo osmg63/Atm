@@ -4,6 +4,7 @@ using Atm.Api.Data.Validations;
 using Atm.Api.Service.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace Atm.Api.Controllers
@@ -18,23 +19,33 @@ namespace Atm.Api.Controllers
         {
             _atmService = atmService;
         }
+        
         [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
 
-            var data = _atmService.Get(id);
+            var data = _atmService.GetById(id);
             return Ok(data);
         }
+       
         [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        public IActionResult GetAl()
         {
-            var data = _atmService.GetAll();
+            var data = _atmService.GetAllWithCityAndDistrictName();
             return Ok(data);
         }
         [HttpPost("Create")]
         public IActionResult Add(CreateAtmMachineDto dto)
         {
-         
+            var validator = new CreateAtmMachineDtoValidator();
+            var result = validator.Validate(dto);
+
+            if (!result.IsValid)
+            {
+                BadRequest(result.Errors.Select(x => x.ErrorMessage).ToList());
+
+            }
+
             var data = _atmService.Add(dto);
             return Ok(data);
         }
@@ -42,6 +53,13 @@ namespace Atm.Api.Controllers
         [HttpPut("update")]
         public IActionResult Update(UpdateAtmMachineDto dto)
         {
+            var validator = new UpdateAtmMachineDtoValidator();
+            var result = validator.Validate(dto);
+
+            if (!result.IsValid)
+            {
+                BadRequest(result.Errors.Select(x => x.ErrorMessage).ToList());
+            }
             _atmService.Update(dto);
 
 
@@ -56,6 +74,19 @@ namespace Atm.Api.Controllers
             _atmService.Delete(id);
             return Ok();
         }
+        //[HttpGet("GetById/{id}")]
+        //public IActionResult GetById(int id)
+        //{
+
+        //    var data = _atmService.Get(id);
+        //    return Ok(data);
+        //}
+        //[HttpGet("GetAll")]
+        //public IActionResult GetAll()
+        //{
+        //    var data = _atmService.GetAll();
+        //    return Ok(data);
+        //}
     }
 }
 // Async Task kullanımı

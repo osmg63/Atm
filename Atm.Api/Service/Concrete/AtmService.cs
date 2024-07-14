@@ -26,14 +26,7 @@ namespace Atm.Api.Service.Concrete
 
         public AtmMachineDto Add(CreateAtmMachineDto dto)
         {
-            var validator = new Data.Validations.CreateAtmMachineDtoValidator();
-            var result = validator.Validate(dto);
-
-            if (!result.IsValid)
-            {
-                throw new ValidationException(result.Errors);
-
-            }
+            
 
             var data = _mapper.Map<AtmMachine>(dto);
 
@@ -70,22 +63,16 @@ namespace Atm.Api.Service.Concrete
 
         public void Update(UpdateAtmMachineDto dto)
         {
-            var validator = new UpdateAtmMachineDtoValidator();
-            var result = validator.Validate(dto);
-
-            if (!result.IsValid)
-            {
-                throw new ValidationException(result.Errors);
-
-            }
+           
 
             var data = _atmMachineRepository.Get(x => x.Id == dto.Id);
             if (data != null)
             {
 
-               // data.Name = dto.Name;
-                //data.Adress = dto.Adress;
-                data.Latitude = dto.Latitude;
+                data.Name = dto.Name;
+                data.IsActive = dto.IsActive;
+               //data.Adress = dto.Adress;
+                //data.Latitude = dto.Latitude;
                 //data.Longitude = dto.Longitude;
                 //data.CityId = dto.CityId;
                 //data.DistrictId = dto.DistrictId;
@@ -95,7 +82,16 @@ namespace Atm.Api.Service.Concrete
             _atmMachineRepository.SaveChanges();
         }
 
+        public AtmMachineDto GetById(int id)
+        {
 
+            return _atmMachineRepository.GetById(id);
+        }
+
+        public List<AtmMachineDto> GetAllWithCityAndDistrictName()
+        {
+            return _atmMachineRepository.GetAllWithCityAndDistrictName();
+        }
 
         //Validation
 
