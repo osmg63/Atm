@@ -16,7 +16,7 @@ namespace Atm.Api.Data.Filters
             {
                 query = Sort(query, filter.Sort);
                 // EF does not apply skip and take without order
-                query = Limit(query, filter.Limit, filter.Offset);
+             //   query = Limit(query, filter.Limit, filter.Offset);
             }
             // Return the final query
             return query;

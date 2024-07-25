@@ -1,6 +1,5 @@
 ﻿using Atm.Api.Core.Repository.Abstract;
 using Atm.Api.Data.DTOs;
-using Atm.Api.Data.DynamicPagination;
 using Atm.Api.Data.Entities;
 using Atm.Api.Data.Filters;
 using Atm.Api.Service.Abstract;
@@ -92,45 +91,9 @@ namespace Atm.Api.Service.Concrete
             return _atmMachineRepository.GetAllWithCityAndDistrictName();
         }
 
-       
-
-        public async Task<PaginatedList<AtmMachineDto>> PaginationAsync(PagedRequest request)
+        public Task<PaginatedResult<AtmMachineDto>> GetPaginationView(FilterDTO filter)
         {
-            var query = _atmMachineRepository.GetFilteredPagination();
-
-           
-            if (!string.IsNullOrEmpty(request.Filter))
-            {
-                
-                    query = query.Where(request.Filter); 
-                
-               
-            }
-
-            
-            if (!string.IsNullOrEmpty(request.Sort))
-            {
-                
-                    query = query.OrderBy(request.Sort); 
-                
-                
-                 
-            }
-
-            var totalRecords = await query.CountAsync();
-            var pagedData = await query.Skip((request.PageNumber - 1) * request.PageSize)
-                                       .Take(request.PageSize)
-                                       .ToListAsync();
-
-            var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
-            var paginatedList = new PaginatedList<AtmMachineDto>(pagedData, request.PageNumber, totalPages, request.Filter, request.Sort);
-
-            return paginatedList;
-        }
-
-        public Task<IList<AtmMachineDto>> GetOrdersView(FilterDTO filter)
-        {
-            return _atmMachineRepository.GetOrdersView(filter);
+            return _atmMachineRepository.GetPaginationView(filter);
         }
     }
 

@@ -1,16 +1,10 @@
-﻿using Atm.Api.Core.Repository.Abstract;
-using Atm.Api.Data;
-using Atm.Api.Data.DTOs;
-using Atm.Api.Data.DynamicPagination;
-using Atm.Api.Data.Entities;
+﻿using Atm.Api.Data.DTOs;
 using Atm.Api.Data.Filters;
 using Atm.Api.Data.Validations;
 using Atm.Api.Service.Abstract;
-using Atm.Api.Service.Concrete;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
+
 
 namespace Atm.Api.Controllers
 {
@@ -78,17 +72,11 @@ namespace Atm.Api.Controllers
             return Ok();
         }
     
-        [HttpPost("paginated")]
-        public async Task<IActionResult> GetAtmMachines(PagedRequest request)
-        {
-            var paginatedList = await _atmService.PaginationAsync(request);
 
-            return Ok(paginatedList);
-        }
-        [HttpPost("get-orders-view")]
-        public async Task<IActionResult> GetOrdersView(FilterDTO filter)
+       [HttpPost("Pagination")]
+        public async Task<IActionResult> GetPaginationView(FilterDTO filter)
         {
-            var data = await _atmService.GetOrdersView(filter) ;
+            var data = await _atmService.GetPaginationView(filter) ;
 
             return Ok(data);
         }
