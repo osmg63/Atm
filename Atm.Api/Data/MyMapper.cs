@@ -1,6 +1,8 @@
 ﻿using Atm.Api.Data.DTOs;
 using Atm.Api.Data.Entities;
 using AutoMapper;
+using AutoMapper.QueryableExtensions; 
+
 
 namespace Atm.Api.Data
 {

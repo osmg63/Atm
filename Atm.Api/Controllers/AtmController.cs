@@ -1,7 +1,12 @@
-﻿using Atm.Api.Data.DTOs;
+﻿using Atm.Api.Core.Repository.Abstract;
+using Atm.Api.Data;
+using Atm.Api.Data.DTOs;
+using Atm.Api.Data.DynamicPagination;
 using Atm.Api.Data.Entities;
+using Atm.Api.Data.Filters;
 using Atm.Api.Data.Validations;
 using Atm.Api.Service.Abstract;
+using Atm.Api.Service.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -29,11 +34,12 @@ namespace Atm.Api.Controllers
         }
        
         [HttpGet("GetAll")]
-        public IActionResult GetAl()
+        public IActionResult GetAll()
         {
-            var data = _atmService.GetAllWithCityAndDistrictName();
+            var data = _atmService.GetAllWithCityAndDistrictName    ();
             return Ok(data);
         }
+
         [HttpPost("Create")]
         public IActionResult Add(CreateAtmMachineDto dto)
         {
@@ -64,29 +70,29 @@ namespace Atm.Api.Controllers
 
 
             return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
-        }
-
-        
-
+        }        
         [HttpDelete("Delete/{id}")]
         public IActionResult DeleteById(int id)
         {
             _atmService.Delete(id);
             return Ok();
         }
-        //[HttpGet("GetById/{id}")]
-        //public IActionResult GetById(int id)
-        //{
+    
+        [HttpPost("paginated")]
+        public async Task<IActionResult> GetAtmMachines(PagedRequest request)
+        {
+            var paginatedList = await _atmService.PaginationAsync(request);
 
-        //    var data = _atmService.Get(id);
-        //    return Ok(data);
-        //}
-        //[HttpGet("GetAll")]
-        //public IActionResult GetAll()
-        //{
-        //    var data = _atmService.GetAll();
-        //    return Ok(data);
-        //}
+            return Ok(paginatedList);
+        }
+        [HttpPost("get-orders-view")]
+        public async Task<IActionResult> GetOrdersView(FilterDTO filter)
+        {
+            var data = await _atmService.GetOrdersView(filter) ;
+
+            return Ok(data);
+        }
     }
+    
 }
 // Async Task kullanımı
