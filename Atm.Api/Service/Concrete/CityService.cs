@@ -7,30 +7,34 @@ using System.Linq.Expressions;
 
 public class CityService : ICityService
 {
-    private readonly ICityRepository _cityRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    
+
     private readonly IMapper _mapper;   
 
-    public CityService(ICityRepository cityRepository,IMapper mapper)
+    public CityService(IMapper mapper,IUnitOfWork unitOfWork)
     {
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
-        _cityRepository = cityRepository;
+
     }
 
     public CityDto Get(int id)
     {
-        var data=_cityRepository.Get(x=>x.Id==id);
+        var data = _unitOfWork.CityRepository.Get(x=>x.Id==id);
         return _mapper.Map<CityDto>(data);
 
     }
     public List<DistrictDtoResponse> GetWithDistricts(int id)
     {
-        return _cityRepository.GetDistrictByCityId(id);
+        return _unitOfWork.CityRepository.GetDistrictByCityId(id);
        
 
     }
     public List<AtmDtoForCityResponse> GetWithAtms(int id)
     {
-        return _cityRepository.GetAtmsWithCityId(id);
+        return _unitOfWork.CityRepository.GetAtmsWithCityId(id);
 
 
     }
@@ -38,7 +42,8 @@ public class CityService : ICityService
 
     public List<CityDto> GetAll()
     {
-        var data= _cityRepository.GetAll();
+        var data = _unitOfWork.CityRepository.GetAll();
+        _unitOfWork.SaveChangesAsync();
 
         return _mapper.Map<List<CityDto>>(data);
     }

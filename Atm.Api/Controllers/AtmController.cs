@@ -83,4 +83,4 @@ namespace Atm.Api.Controllers
     }
     
 }
-// Async Task kullanımı
+

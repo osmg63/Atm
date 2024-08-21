@@ -25,6 +25,8 @@ builder.Services.AddDbContext<AtmDbContext>(options =>
 
 
 builder.Services.AddTransient<IAtmMachineRepository,AtmRepository>();
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddTransient<IAtmService,AtmService>();
 builder.Services.AddTransient<ICityRepository, CityRepository>();
 builder.Services.AddTransient<ICityService, CityService>();

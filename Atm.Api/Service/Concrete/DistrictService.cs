@@ -13,29 +13,30 @@ namespace Atm.Api.Service.Concrete
     {
         private readonly IDistrictRepository districtRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DistrictService(IDistrictRepository districtRepository, IMapper mapper)
+        public DistrictService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            this.districtRepository = districtRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         public DistrictDto Get(int id)
         {
-            var data = districtRepository.Get(x=>x.Id==id);
+            var data = _unitOfWork.DistrictRepository.Get(x=>x.Id==id);
 
             return _mapper.Map<DistrictDto>(data);
         }
         public List<DistrictDto> GetByCityId(int cityId)
         {
-            var data = districtRepository.Get(x => x.CityId == cityId);
+            var data = _unitOfWork.DistrictRepository.Get(x => x.CityId == cityId);
             return _mapper.Map<List<DistrictDto>>(data);
 
         }
 
         public List<DistrictDto> GetAll()
         {
-            var data= districtRepository.GetAll();
+            var data= _unitOfWork.DistrictRepository.GetAll();
 
             return _mapper.Map<List<DistrictDto>>(data);
         }

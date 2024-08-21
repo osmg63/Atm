@@ -14,12 +14,14 @@ namespace Atm.Api.Service.Concrete
     {
         private readonly IMapper _mapper;
 
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IAtmMachineRepository _atmMachineRepository;
 
-        public AtmService(IAtmMachineRepository atmMachineRepository, IMapper mapper)
+        public AtmService(IUnitOfWork unitOfWork, IMapper mapper, IAtmMachineRepository atmMachineRepository)
         {
-            this._atmMachineRepository = atmMachineRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _atmMachineRepository = atmMachineRepository;
         }
 
         public AtmMachineDto Add(CreateAtmMachineDto dto)
@@ -29,8 +31,8 @@ namespace Atm.Api.Service.Concrete
             var data = _mapper.Map<AtmMachine>(dto);
 
 
-            _atmMachineRepository.Add(data);
-            _atmMachineRepository.SaveChanges();
+            _unitOfWork.AtmMachineRepository.Add(data);
+            _unitOfWork.AtmMachineRepository.SaveChanges();
 
 
             return _mapper.Map<AtmMachineDto>(data);
@@ -40,21 +42,21 @@ namespace Atm.Api.Service.Concrete
         public void Delete(int id)
         {
             
-            var data = _atmMachineRepository.Get(x=>x.Id==id);
-            _atmMachineRepository.Delete(data);
+            var data = _unitOfWork.AtmMachineRepository.Get(x=>x.Id==id);
+            _unitOfWork.AtmMachineRepository.Delete(data);
 
         }
 
         public AtmMachineDto Get(int id)
         {
 
-            var data = _atmMachineRepository.Get(x => x.Id == id);
+            var data = _unitOfWork.AtmMachineRepository.Get(x => x.Id == id);
             return _mapper.Map<AtmMachineDto>(data);
         }
 
         public List<AtmMachineDto> GetAll()
         {
-            var data = _atmMachineRepository.GetAll();
+            var data = _unitOfWork.AtmMachineRepository.GetAll();
             return _mapper.Map<List<AtmMachineDto>>(data);
         }
 
@@ -63,7 +65,7 @@ namespace Atm.Api.Service.Concrete
         {
            
 
-            var data = _atmMachineRepository.Get(x => x.Id == dto.Id);
+            var data = _unitOfWork.AtmMachineRepository.Get(x => x.Id == dto.Id);
             if (data != null)
             {
 
@@ -77,23 +79,23 @@ namespace Atm.Api.Service.Concrete
 
 
             }
-            _atmMachineRepository.SaveChanges();
+            _unitOfWork.AtmMachineRepository.SaveChanges();
         }
 
         public AtmMachineDto GetById(int id)
         {
 
-            return _atmMachineRepository.GetById(id);
+            return _unitOfWork.AtmMachineRepository.GetById(id);
         }
 
         public List<AtmMachineDto> GetAllWithCityAndDistrictName()
         {
-            return _atmMachineRepository.GetAllWithCityAndDistrictName();
+            return _unitOfWork.AtmMachineRepository.GetAllWithCityAndDistrictName();
         }
 
         public Task<PaginatedResult<AtmMachineDto>> GetPaginationView(FilterDTO filter)
         {
-            return _atmMachineRepository.GetPaginationView(filter);
+            return _unitOfWork.AtmMachineRepository.GetPaginationView(filter);
         }
     }
 

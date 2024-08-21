@@ -73,6 +73,7 @@ namespace Atm.Api.Core.Repository.Concrete
 
         public async Task<PaginatedResult<AtmMachineDto>> GetPaginationView(FilterDTO filter)
         {
+            
             var ordersQuery = _context
                 .AtmMachines
                 .ProjectTo<AtmMachineDto>(_mapper.ConfigurationProvider);
